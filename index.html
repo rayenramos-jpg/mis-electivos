@@ -1,41 +1,43 @@
 <!doctype html>
 <html lang="es">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Un fetch</title>
-        <style>
-            body {
-                font-family: Helvetica, Arial, sans-serif;
-				color: black;
-            }
-			table {
-			border-collapse: collapse; 
-			text-align: left;
-			}
-			td, th{
-			border: 1px solid magenta; 
-			padding: 1rem;
-			}
-        </style>
-    </head>
-    <body>
-        <h1>Mis electivos</h1>
-		<table>
-		<thead>
-		<tr>
-		<th>Asignatura</th>
-		<th>Grupo</th>
-		<th>Enfoque</th>
-		</tr>
-		</thead>
-		</table>
-		<tbody></tbody>
-        <ol id="estudiantes"></ol>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Un fetch</title>
+    <style>
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            color: black;
+        }
+        table {
+            border-collapse: collapse; 
+            text-align: left;
+        }
+        td, th {
+            border: 1px solid magenta; 
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body>
 
-        <script>
-		const t = document.querySelector("table");
-            const URL = "https://api.myjson.online/v1/records/ab88ab94-d7fd-432f-a504-f133bf5d67a3";
+<h1>Mis electivos</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Asignatura</th>
+            <th>Grupo</th>
+            <th>Enfoque</th>
+        </tr>
+    </thead>
+    <tbody id="tabla-body"></tbody>
+</table>
+
+<script>
+const tbody = document.querySelector("#tabla-body");
+const URL = "https://api.myjson.online/v1/records/ab88ab94-d7fd-432f-a504-f133bf5d67a3";
+
 fetch(URL)
     .then((respuesta) => {
         if (!respuesta.ok) {
@@ -44,18 +46,24 @@ fetch(URL)
         return respuesta.json();
     })
     .then((datos) => {
-        var trabajo = datos.data;
+        const trabajo = datos.data;
         console.log("Datos recibidos:", trabajo);
+
         trabajo.forEach((x) => {
-            if (x.ok == 1){
-                t.innerHTML += `<tr><td>${x.name}</td><td>${x.group}</td><td>${x.focus} ;
-				</td></tr>`;
+            if (x.ok == 1) {
+                tbody.innerHTML += `
+                <tr>
+                    <td>${x.name}</td>
+                    <td>${x.group}</td>
+                    <td>${x.focus}</td>
+                </tr>`;
             }
         });
     })
     .catch((error) => {
         console.error("Algo salió mal:", error);
     });
-        </script>
-    </body>
+</script>
+
+</body>
 </html>
